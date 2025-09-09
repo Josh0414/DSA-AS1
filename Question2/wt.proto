@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+// Car status enumeration
+enum CarStatus {
+  AVAILABLE = 0;
+  UNAVAILABLE = 1;
+  RENTED = 2;
+}
+
+// User role enumeration
+enum UserRole {
+  CUSTOMER = 0;
+  ADMIN = 1;
+}
+
+// Data types
+message Car {
+  string plate = 1;
+  string make = 2;
+  string model = 3;
+  int32 year = 4;
+  double daily_price = 5;
+  int32 mileage = 6;
+  CarStatus status = 7;
+}
+
+message User {
+  string user_id = 1;
+  string name = 2;
+  string email = 3;
+  UserRole role = 4;
+}
+
+message CartItem {
+  string plate = 1;
+  string start_date = 2;
+  string end_date = 3;
+  double total_price = 4;
+}
+
+message Reservation {
+  string reservation_id = 1;
+  string customer_id = 2;
+  repeated CartItem items = 3;
+  double total_amount = 4;
+  string reservation_date = 5;
+  string status = 6;
+}
+
+// Request and Response types
+message AddCarRequest {
+  Car car = 1;
+}
+
+message AddCarResponse {
+  string plate = 1;
+  string message = 2;
+}
+
+message CreateUsersResponse {
+  string message = 1;
+  int32 users_created = 2;
+}
+
+message UpdateCarRequest {
+  string plate = 1;
+  Car car_update = 2;
+}
+
+message UpdateCarResponse {
+  string message = 1;
+  Car updated_car = 2;
+}
+
+message RemoveCarRequest {
+  string plate = 1;
+}
+
+message RemoveCarResponse {
+  string message = 1;
+  repeated Car remaining_cars = 2;
+}
+
+message ListAvailableCarsRequest {
+  string filter = 1;
+}
+
+message SearchCarRequest {
+  string plate = 1;
+}
+
+message SearchCarResponse {
+  Car car = 1;
+  string message = 2;
+}
+
+message AddToCartRequest {
+  string customer_id = 1;
+  string plate = 2;
+  string start_date = 3;
+  string end_date = 4;
+}
+
+message AddToCartResponse {
+  string message = 1;
+  CartItem cart_item = 2;
+}
+
+message PlaceReservationRequest {
+  string customer_id = 1;
+}
+
+message PlaceReservationResponse {
+  string message = 1;
+  Reservation reservation = 2;
+}
+
+message ListReservationsRequest {
+  // Empty message for listing all reservations
+}
+
+message ListReservationsResponse {
+  repeated Reservation reservations = 1;
+}
+
+// Service definition
+service CarRentalService {
+  // Admin operations
+  rpc AddCar(AddCarRequest) returns (AddCarResponse);
+  rpc CreateUsers(stream User) returns (CreateUsersResponse);
+  rpc UpdateCar(UpdateCarRequest) returns (UpdateCarResponse);
+  rpc RemoveCar(RemoveCarRequest) returns (RemoveCarResponse);
+  
+  // Customer operations
+  rpc ListAvailableCars(ListAvailableCarsRequest) returns (stream Car);
+  rpc SearchCar(SearchCarRequest) returns (SearchCarResponse);
+  rpc AddToCart(AddToCartRequest) returns (AddToCartResponse);
+  rpc PlaceReservation(PlaceReservationRequest) returns (PlaceReservationResponse);
+  rpc ListReservations(ListReservationsRequest) returns (ListReservationsResponse);
+}
