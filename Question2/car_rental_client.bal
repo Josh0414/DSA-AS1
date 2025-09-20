@@ -338,7 +338,7 @@ function addCarsDemo() returns error? {
     
     // Add first car
     Car car1 = {
-        plate: "NAM-001",
+        plate: "N 6289 W",
         make: "Toyota",
         model: "Hilux",
         year: 2023,
@@ -353,7 +353,7 @@ function addCarsDemo() returns error? {
     
     // Add second car
     Car car2 = {
-        plate: "NAM-002",
+        plate: "N 346273 W",
         make: "Nissan",
         model: "Navara",
         year: 2022,
@@ -368,7 +368,7 @@ function addCarsDemo() returns error? {
     
     // Add luxury car
     Car car3 = {
-        plate: "LUX-001",
+        plate: "N 5673576 S",
         make: "BMW",
         model: "X5",
         year: 2024,
@@ -428,19 +428,19 @@ function searchCarDemo() returns error? {
     io:println("4. Customer searching for specific cars...");
     
     // Search for available car
-    SearchCarRequest searchRequest1 = {plate: "NAM-001"};
+    SearchCarRequest searchRequest1 = {plate: "N 6289 W"};
     SearchCarResponse searchResponse1 = check carRentalClient->SearchCar(searchRequest1);
     
-    io:println("Searching for NAM-001: " + searchResponse1.message);
+    io:println("Searching for N 6289 W: " + searchResponse1.message);
     if searchResponse1.car.plate != "" {
         io:println("Found: " + searchResponse1.car.make + " " + searchResponse1.car.model + 
                   " - $" + searchResponse1.car.dailyPrice.toString() + "/day");
     }
     
     // Search for non-existent car
-    SearchCarRequest searchRequest2 = {plate: "XXX-999"};
+    SearchCarRequest searchRequest2 = {plate: "N 9999 S"};
     SearchCarResponse searchResponse2 = check carRentalClient->SearchCar(searchRequest2);
-    io:println("Searching for XXX-999: " + searchResponse2.message);
+    io:println("Searching for N 9999 S: " + searchResponse2.message);
     
     io:println("✓ Successfully completed car searches!\n");
 }
@@ -452,7 +452,7 @@ function addToCartDemo() returns error? {
     // Add first car to cart
     AddToCartRequest cartRequest1 = {
         customer_id: "customer001",
-        plate: "NAM-001",
+        plate: "N 6289 W",
         start_date: "2025-09-15",
         end_date: "2025-09-18"
     };
@@ -467,7 +467,7 @@ function addToCartDemo() returns error? {
     // Add second car to cart
     AddToCartRequest cartRequest2 = {
         customer_id: "customer001",
-        plate: "LUX-001", 
+        plate: "N 5673576 S", 
         start_date: "2025-09-20",
         end_date: "2025-09-22"
     };
@@ -501,7 +501,7 @@ function placeReservationDemo() returns error? {
         io:println("- Items: " + reservation.items.length().toString() + " cars");
         
         foreach var item in reservation.items {
-            io:println("  * " + item.plate + " (" + item.startDate + " to " + item.endDate + ")");
+            io:println("  * " + item.plate + " (" + item.start_date + " to " + item.end_date + ")");
         }
     }
     
@@ -513,7 +513,7 @@ function updateCarDemo() returns error? {
     io:println("7. Admin updating car details...");
     
     Car carUpdate = {
-        plate: "NAM-002",
+        plate: "N 346273 W", // Keep existing
         make: "",  // Keep existing
         model: "", // Keep existing 
         year: 0,   // Keep existing
@@ -523,7 +523,7 @@ function updateCarDemo() returns error? {
     };
     
     UpdateCarRequest updateRequest = {
-        plate: "NAM-002",
+        plate: "N 346273 W",
         car_update: carUpdate
     };
     
