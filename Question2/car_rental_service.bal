@@ -447,8 +447,8 @@ public function main() returns error? {
 
 function initializeSampleData() {
     // Add sample cars
-    carInventory["ABC-123"] = {
-        plate: "ABC-123",
+    carInventory["N 6289 W"] = {
+        plate: "N 6289 W",
         make: "Toyota",
         model: "Camry",
         year: 2022,
@@ -457,8 +457,8 @@ function initializeSampleData() {
         status: AVAILABLE
     };
     
-    carInventory["XYZ-789"] = {
-        plate: "XYZ-789", 
+    carInventory["N 346273 W"] = {
+        plate: "N 346273 W", 
         make: "Honda",
         model: "Accord",
         year: 2021,
@@ -467,8 +467,8 @@ function initializeSampleData() {
         status: AVAILABLE
     };
     
-    carInventory["DEF-456"] = {
-        plate: "DEF-456",
+    carInventory["N 5673576 S"] = {
+        plate: "N 5673576 S",
         make: "BMW",
         model: "X3",
         year: 2023,
