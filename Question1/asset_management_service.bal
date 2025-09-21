@@ -225,6 +225,11 @@ service /assets on new http:Listener(8081) {
         
         return http:OK;
     }
+    // health check
+    resource function get health() returns json {
+        return { status: "ok", time: time:utcToString(time:utcNow()) };
+    }
+ 
 
     // Task management under work orders
     resource function post [string assetTag]/workorders/[string workOrderId]/tasks(@http:Payload Task task) returns http:Created|http:NotFound {
@@ -242,7 +247,7 @@ service /assets on new http:Listener(8081) {
         asset.workOrders[workOrderId] = workOrder;
         assetDatabase[assetTag] = asset;
         
-        return http:CREATED;
+        return http:CREATED;    
     }
 
     resource function delete [string assetTag]/workorders/[string workOrderId]/tasks/[string taskId]() returns http:NoContent|http:NotFound {
