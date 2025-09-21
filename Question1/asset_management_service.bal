@@ -141,7 +141,9 @@ service /assets on new http:Listener(8081) {
         return overdueAssets;
     }
 
-    // Component management
+    // Component management//
+
+    //Add a new component to an asset
     resource function post [string assetTag]/components(@http:Payload Component component) returns http:Created|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) {
             return http:NOT_FOUND;
@@ -154,6 +156,7 @@ service /assets on new http:Listener(8081) {
         return http:CREATED;
     }
 
+    //Delete a component from an asset
     resource function delete [string assetTag]/components/[string componentId]() returns http:NoContent|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) {
             return http:NOT_FOUND;
@@ -170,7 +173,9 @@ service /assets on new http:Listener(8081) {
         return http:NO_CONTENT;
     }
 
-    // Schedule management
+    // Schedule management//
+
+    //Add a new maintenance schedule to an asset
     resource function post [string assetTag]/schedules(@http:Payload MaintenanceSchedule schedule) returns http:Created|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) {
             return http:NOT_FOUND;
@@ -183,6 +188,7 @@ service /assets on new http:Listener(8081) {
         return http:CREATED;
     }
 
+    // Delete a maintenance schedule from an asset
     resource function delete [string assetTag]/schedules/[string scheduleId]() returns http:NoContent|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) {
             return http:NOT_FOUND;
@@ -199,7 +205,9 @@ service /assets on new http:Listener(8081) {
         return http:NO_CONTENT;
     }
 
-    // Work order management
+    // Work order management//
+
+    //Add a new work order to an asset
     resource function post [string assetTag]/workorders(@http:Payload WorkOrder workOrder) returns http:Created|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) {
             return http:NOT_FOUND;
@@ -212,6 +220,7 @@ service /assets on new http:Listener(8081) {
         return http:CREATED;
     }
 
+    // Update an existing work order of an asset
     resource function put [string assetTag]/workorders/[string workOrderId](@http:Payload WorkOrder workOrder) returns http:Ok|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) {
             return http:NOT_FOUND;
@@ -234,7 +243,9 @@ service /assets on new http:Listener(8081) {
     }
  
 
-    // Task management under work orders
+    // Task management under work orders//
+
+    // Add a new task to a work order
     resource function post [string assetTag]/workorders/[string workOrderId]/tasks(@http:Payload Task task) returns http:Created|http:NotFound {
         if (!assetDatabase.hasKey(assetTag)) { // Checks if the asset (identified by assetTag) exists in assetDatabase
             return http:NOT_FOUND; 
