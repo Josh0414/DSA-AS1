@@ -7,13 +7,14 @@ enum CarStatus {
   RENTED = 2;
 }
 
-// User role enumeration
+// User role enumeration,defines user roles
 enum UserRole {
   CUSTOMER = 0;
   ADMIN = 1;
 }
 
 // Data types
+//Represents a car in the system
 message Car {
   string plate = 1;
   string make = 2;
@@ -23,25 +24,25 @@ message Car {
   int32 mileage = 6;
   CarStatus status = 7;
 }
-
+//Represents a user in the system
 message User {
   string user_id = 1;
   string name = 2;
   string email = 3;
   UserRole role = 4;
 }
-
+//Represents a car added to a users cart for rental period
 message CartItem {
   string plate = 1;
   string start_date = 2;
   string end_date = 3;
   double total_price = 4;
 }
-
+//represents final reservation 
 message Reservation {
   string reservation_id = 1;
   string customer_id = 2;
-  repeated CartItem items = 3;
+  repeated CartItem items = 3; //multiple cars per reservation
   double total_amount = 4;
   string reservation_date = 5;
   string status = 6;
