@@ -277,12 +277,12 @@ public function main() returns error? {
     // 9. Admin operations - Remove car
     check removeCarDemo();
     
-    io:println("\n=== Car Rental Client Demo completed successfully! ===");
+    io:println("\n=== Car Rental Client Demo completed successfully! ===\n\n");
 }
 
 // Demo function 1: Create multiple users using client streaming
 function createUsersDemo() returns error? {
-    io:println("1. Creating multiple users via streaming...");
+    io:println("1. Creating multiple users via streaming...\n");
     
     // Get streaming client
     CreateUsersStreamingClient streamingClient = check carRentalClient->CreateUsers();
@@ -324,17 +324,17 @@ function createUsersDemo() returns error? {
     CreateUsersResponse|grpc:Error? response = streamingClient->receiveCreateUsersResponse();
     
     if response is CreateUsersResponse {
-        io:println("✓ " + response.message + " (Total: " + response.users_created.toString() + " users)\n");
+        io:println("✓ " + response.message + " (Total: " + response.users_created.toString() + " users)\n\n");
     } else if response is grpc:Error {
-        io:println("✗ Error receiving response: " + response.message() + "\n");
+        io:println("✗ Error receiving response: " + response.message() + "\n\n");
     } else {
-        io:println("✗ No response received\n");
+        io:println("✗ No response received\n\n");
     }
 }
 
 // Demo function 2: Admin adds cars to the system
 function addCarsDemo() returns error? {
-    io:println("2. Admin adding cars to the system...");
+    io:println("2. Admin adding cars to the system...\n");
     
     // Add first car
     Car car1 = {
@@ -381,12 +381,12 @@ function addCarsDemo() returns error? {
     AddCarResponse response3 = check carRentalClient->AddCar(request3);
     io:println("Added luxury car " + response3.plate + ": " + response3.message);
     
-    io:println("✓ Successfully added all cars!\n");
+    io:println("✓ Successfully added all cars!\n\n");
 }
 
 // Demo function 3: Customer lists available cars with streaming
 function listAvailableCarsDemo() returns error? {
-    io:println("3. Listing all available cars (server streaming)...");
+    io:println("3. Listing all available cars (server streaming)...\n");
     
     ListAvailableCarsRequest request = {filter: ""};
     stream<Car, grpc:Error?> carStream = check carRentalClient->ListAvailableCars(request);
@@ -405,7 +405,7 @@ function listAvailableCarsDemo() returns error? {
         io:println("Error streaming cars: " + result.message());
     }
     
-    io:println("✓ Successfully retrieved available cars!\n");
+    io:println("✓ Successfully retrieved available cars!\n\n");
     
     // Also demo filtering
     io:println("3b. Filtering cars by 'Toyota'...");
@@ -420,12 +420,12 @@ function listAvailableCarsDemo() returns error? {
         io:println("Error filtering cars: " + filterResult.message());
     }
     
-    io:println("✓ Successfully filtered cars!\n");
+    io:println("✓ Successfully filtered cars!\n\n");
 }
 
 // Demo function 4: Customer searches for specific car
 function searchCarDemo() returns error? {
-    io:println("4. Customer searching for specific cars...");
+    io:println("4. Customer searching for specific cars...\n");
     
     // Search for available car
     SearchCarRequest searchRequest1 = {plate: "N 6289 W"};
@@ -442,12 +442,12 @@ function searchCarDemo() returns error? {
     SearchCarResponse searchResponse2 = check carRentalClient->SearchCar(searchRequest2);
     io:println("Searching for N 9999 S: " + searchResponse2.message);
     
-    io:println("✓ Successfully completed car searches!\n");
+    io:println("✓ Successfully completed car searches!\n\n");
 }
 
 // Demo function 5: Customer adds cars to cart
 function addToCartDemo() returns error? {
-    io:println("5. Customer adding cars to rental cart...");
+    io:println("5. Customer adding cars to rental cart...\n");
     
     // Add first car to cart
     AddToCartRequest cartRequest1 = {
@@ -479,12 +479,12 @@ function addToCartDemo() returns error? {
               " to " + cartResponse2.cart_item.end_date + 
               " - Total: $" + cartResponse2.cart_item.total_price.toString());
     
-    io:println("✓ Successfully added cars to customer cart!\n");
+    io:println("✓ Successfully added cars to customer cart!\n\n");
 }
 
 // Demo function 6: Customer places reservation
 function placeReservationDemo() returns error? {
-    io:println("6. Customer placing reservation...");
+    io:println("6. Customer placing reservation...\n");
     
     PlaceReservationRequest reservationRequest = {customerId: "customer001"};
     PlaceReservationResponse reservationResponse = check carRentalClient->PlaceReservation(reservationRequest);
@@ -505,12 +505,12 @@ function placeReservationDemo() returns error? {
         }
     }
     
-    io:println("✓ Successfully placed reservation!\n");
+    io:println("✓ Successfully placed reservation!\n\n");
 }
 
 // Demo function 7: Admin updates car details
 function updateCarDemo() returns error? {
-    io:println("7. Admin updating car details...");
+    io:println("7. Admin updating car details...\n");
     
     Car carUpdate = {
         plate: "N 346273 W", // Keep existing
@@ -535,12 +535,12 @@ function updateCarDemo() returns error? {
                   " - New daily rate: $" + updatedCar.dailyPrice.toString());
     }
     
-    io:println("✓ Successfully updated car details!\n");
+    io:println("✓ Successfully updated car details!\n\n");
 }
 
 // Demo function 8: Admin lists all reservations
 function listReservationsDemo() returns error? {
-    io:println("8. Admin viewing all reservations...");
+    io:println("8. Admin viewing all reservations...\n");
     
     ListReservationsRequest listRequest = {};
     ListReservationsResponse listResponse = check carRentalClient->ListReservations(listRequest);
@@ -556,12 +556,12 @@ function listReservationsDemo() returns error? {
                   " | Status: " + reservation.status);
     }
     
-    io:println("✓ Successfully retrieved all reservations!\n");
+    io:println("✓ Successfully retrieved all reservations!\n\n");
 }
 
 // Demo function 9: Admin removes a car
 function removeCarDemo() returns error? {
-    io:println("9. Admin removing a car from inventory...");
+    io:println("9. Admin removing a car from inventory...\n");
     
     RemoveCarRequest removeRequest = {plate: "NAM-002"};
     RemoveCarResponse removeResponse = check carRentalClient->RemoveCar(removeRequest);
@@ -573,5 +573,5 @@ function removeCarDemo() returns error? {
         io:println("- " + car.plate + ": " + car.make + " " + car.model);
     }
     
-    io:println("✓ Successfully removed car from inventory!\n");
+    io:println("✓ Successfully removed car from inventory!\n\n");
 }

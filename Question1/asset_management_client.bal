@@ -35,7 +35,7 @@ public function main() returns error? {
 }
 
 function createSampleAssets() returns error? {
-    io:println("1. Creating sample assets...");
+    io:println("1. Creating sample assets...\n");
     
     // Create first asset
     json asset1 = {
@@ -85,32 +85,32 @@ function createSampleAssets() returns error? {
     http:Response response3 = check assetClient->post("/assets", asset3);
     io:println("Created asset VH-001: " + response3.statusCode.toString());
     
-    io:println("✓ Sample assets created successfully!\n");
+    io:println("\n✓ Sample assets created successfully!\n\n");
 }
 
 function viewAllAssets() returns error? {
-    io:println("2. Viewing all assets...");
+    io:println("2. Viewing all assets...\n");
     
     // Retrieves all assets from the service as a JSON array
     json response = check assetClient->get("/assets");
     io:println("All assets:");
     io:println(response.toJsonString());
-    io:println("✓ Successfully retrieved all assets!\n");
+    io:println("\n✓ Successfully retrieved all assets!\n\n");
 }
 
 function viewAssetsByFaculty(string faculty) returns error? {
-    io:println("3. Viewing assets by faculty: " + faculty);
+    io:println("3. Viewing assets by faculty: " + faculty + "\n");
     
     // URL encode the faculty name manually for spaces and ampersands
     string encodedFaculty = "Computing%20%26%20Informatics";
     json response = check assetClient->get("/assets/faculty/" + encodedFaculty);
     io:println("Assets in " + faculty + ":");
     io:println(response.toJsonString());
-    io:println("✓ Successfully filtered assets by faculty!\n");
+    io:println("\n✓ Successfully filtered assets by faculty!\n\n");
 }
 
 function addComponentToAsset() returns error? {
-    io:println("4. Adding component to asset EQ-001...");
+    io:println("4. Adding component to asset EQ-001... \n");
     
     json component = {
         "componentId": "COMP-001",
@@ -120,7 +120,7 @@ function addComponentToAsset() returns error? {
     };
     
     http:Response response = check assetClient->post("/assets/EQ-001/components", component);
-    io:println("Added component: " + response.statusCode.toString());
+    io:println("\nSuccessfully added component: " + response.statusCode.toString());
     
     // Add another component
     json component2 = {
@@ -131,12 +131,12 @@ function addComponentToAsset() returns error? {
     };
     
     http:Response response2 = check assetClient->post("/assets/EQ-001/components", component2);
-    io:println("Added second component: " + response2.statusCode.toString());
-    io:println("✓ Successfully added components!\n");
+    io:println("Successfully added second component: " + response2.statusCode.toString());
+    io:println("\n✓ Successfully added all components!\n\n");
 }
 
 function addMaintenanceSchedule() returns error? {
-    io:println("5. Adding maintenance schedule...");
+    io:println("5. Adding maintenance schedule...\n");
     
     json schedule = {
         "scheduleId": "MAINT-001",
@@ -147,7 +147,7 @@ function addMaintenanceSchedule() returns error? {
     };
     
     http:Response response = check assetClient->post("/assets/EQ-001/schedules", schedule);
-    io:println("Added schedule: " + response.statusCode.toString());
+    io:println("Successfully added schedule: " + response.statusCode.toString());
     
     // Add overdue schedule to server
     json overdueSchedule = {
@@ -160,20 +160,20 @@ function addMaintenanceSchedule() returns error? {
     
     http:Response response2 = check assetClient->post("/assets/EQ-002/schedules", overdueSchedule);
     io:println("Added overdue schedule to EQ-002: " + response2.statusCode.toString());
-    io:println("✓ Successfully added maintenance schedules!\n");
+    io:println("\n✓ Successfully added all maintenance schedules!\n\n");
 }
 
 function checkOverdueItems() returns error? {
-    io:println("6. Checking for overdue maintenance items...");
+    io:println("6. Checking for overdue maintenance items...\n");
     
     json response = check assetClient->get("/assets/overdue");
     io:println("Overdue assets:");
     io:println(response.toJsonString());
-    io:println("✓ Successfully retrieved overdue items!\n");
+    io:println("\n✓ Successfully retrieved all overdue items!\n\n");
 }
 
 function updateAssetDemo() returns error? {
-    io:println("7. Updating asset status...");
+    io:println("7. Updating asset status...\n");
     
     // First get the current asset
     json currentAsset = check assetClient->get("/assets/EQ-001");
@@ -209,7 +209,7 @@ function updateAssetDemo() returns error? {
     json verifyAsset = check assetClient->get("/assets/EQ-001");
     io:println("Updated asset details:");
     io:println(verifyAsset.toJsonString());
-    io:println("✓ Successfully updated asset!\n");
+    io:println("\n✓ Successfully updated asset!\n\n");
 }
 
 function addWorkOrderDemo() returns error? {
@@ -225,17 +225,17 @@ function addWorkOrderDemo() returns error? {
     };
     
     http:Response response = check assetClient->post("/assets/EQ-001/workorders", workOrder);
-    io:println("Added work order: " + response.statusCode.toString());
+    io:println("Successfully added work order: " + response.statusCode.toString());
     
     // Add a task to the work order
     json task = {
         "taskId": "TASK-001",
         "description": "Remove old print head",
         "status": "pending",
-        "assignedTo": "Technician John"
+        "assignedTo": "John Doe - Technician"
     };
     
     http:Response taskResponse = check assetClient->post("/assets/EQ-001/workorders/WO-001/tasks", task);
-    io:println("Added task to work order: " + taskResponse.statusCode.toString());
-    io:println("✓ Successfully added work order and task!\n");
+    io:println("Successfully added task to work order: " + taskResponse.statusCode.toString());
+    io:println("\n✓ Successfully added all work orders and tasks!\n\n");
 }
