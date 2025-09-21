@@ -3,7 +3,7 @@ import ballerina/io;
 
 // Client configuration
 http:Client assetClient = check new("http://localhost:8081");
-
+// Reusable HTTP client pointing to our service root (base URL). 'check' aborts main on init error.
 public function main() returns error? {
     io:println("=== Asset Management System Client Demo ===\n");
     
@@ -91,6 +91,7 @@ function createSampleAssets() returns error? {
 function viewAllAssets() returns error? {
     io:println("2. Viewing all assets...");
     
+    // Retrieves all assets from the service as a JSON array
     json response = check assetClient->get("/assets");
     io:println("All assets:");
     io:println(response.toJsonString());
