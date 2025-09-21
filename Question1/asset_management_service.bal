@@ -1,7 +1,7 @@
 import ballerina/http;
 import ballerina/time;
 
-// Asset status enumeration
+// Asset status enumeration 
 public enum AssetStatus {
     ACTIVE,
     UNDER_REPAIR,
@@ -10,9 +10,9 @@ public enum AssetStatus {
 
 // Data structures
 public type Component record {
-    string componentId;
+    string componentId; // unique identifier for the component
     string name;
-    string description;
+    string description; // description of what the component is or its purpose
     string status;
 };
 
@@ -21,9 +21,10 @@ public type MaintenanceSchedule record {
     string description;
     string frequency; // e.g., "quarterly", "yearly"
     string nextDueDate;
-    boolean isOverdue;
+    boolean isOverdue;// A flag that indicates whether the maintenance is overdue
 };
 
+// Defines a Task type, which represents a task associated with a work order
 public type Task record {
     string taskId;
     string description;
@@ -31,6 +32,7 @@ public type Task record {
     string assignedTo?;
 };
 
+// Defines a WorkOrder type, which represents a work order associated with an asset
 public type WorkOrder record {
     string workOrderId;
     string description;
@@ -40,6 +42,7 @@ public type WorkOrder record {
     map<Task> tasks;
 };
 
+// Defines an Asset type, which represents an asset and all its associated information
 public type Asset record {
     string assetTag;
     string name;
@@ -48,8 +51,8 @@ public type Asset record {
     AssetStatus status;
     string acquiredDate;
     map<Component> components;
-    map<MaintenanceSchedule> schedules;
-    map<WorkOrder> workOrders;
+    map<MaintenanceSchedule> schedules; //A map of maintenance schedules associated with the asset
+    map<WorkOrder> workOrders; // A map of work orders associated with the asset. An asset can have multiple work orders
 };
 
 // In-memory database using map
@@ -58,14 +61,14 @@ map<Asset> assetDatabase = {};
 // Asset Management Service
 service /assets on new http:Listener(8081) {
 
-    // Create a new asset
+    // resource function handles HTTP POST requests to create a new asset. The @http:Payload annotation indicates that the request body is expected to contain an Asset object
     resource function post .(@http:Payload Asset asset) returns http:Created|http:BadRequest|http:Conflict {
         if (assetDatabase.hasKey(asset.assetTag)) {
             return http:CONFLICT;
         }
         
         assetDatabase[asset.assetTag] = asset;
-        return http:CREATED;
+        return http:CREATED; // Adds the new asset to the assetDatabase using the assetTag as the key
     }
 
     // Get all assets
@@ -233,8 +236,8 @@ service /assets on new http:Listener(8081) {
 
     // Task management under work orders
     resource function post [string assetTag]/workorders/[string workOrderId]/tasks(@http:Payload Task task) returns http:Created|http:NotFound {
-        if (!assetDatabase.hasKey(assetTag)) {
-            return http:NOT_FOUND;
+        if (!assetDatabase.hasKey(assetTag)) { // Checks if the asset (identified by assetTag) exists in assetDatabase
+            return http:NOT_FOUND; 
         }
         
         Asset asset = assetDatabase.get(assetTag);
@@ -243,7 +246,7 @@ service /assets on new http:Listener(8081) {
         }
         
         WorkOrder workOrder = asset.workOrders.get(workOrderId);
-        workOrder.tasks[task.taskId] = task;
+        workOrder.tasks[task.taskId] = task; // Adds the task in the work order’s task list
         asset.workOrders[workOrderId] = workOrder;
         assetDatabase[assetTag] = asset;
         
